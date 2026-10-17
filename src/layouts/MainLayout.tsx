@@ -198,7 +198,7 @@ export function MainLayout() {
           <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1} sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
             <Logo to={isAuthenticated ? '/events' : '/login'} />
             <Typography variant="body2" color="text.secondary">
-              © {currentYear} Tickify · פרויקט גמר בקורס <bdi>.NET</bdi>
+              © {currentYear} Tickify · פרויקט גמר בקורס <span dir="ltr">.NET</span>
             </Typography>
           </Stack>
         </Container>

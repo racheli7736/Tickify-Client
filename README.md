@@ -14,7 +14,7 @@ in the client.
 |---|---|---|---|
 | Login | `/login` | visitors | done |
 | Register | `/register` | visitors | done |
-| Events (server-side paging, filter, sort) | `/events` | logged in | planned |
+| Events (server-side paging, search, category filter, sort) | `/events` | logged in | done |
 | Event details + seat map + purchase (409 handling) | `/events/:id` | logged in | planned |
 | My orders (+ cancel) | `/orders` | logged in | planned |
 | Admin: events (list / create / edit / delete) | `/admin/events` | Admin | planned |
