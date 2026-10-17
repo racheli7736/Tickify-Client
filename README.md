@@ -13,7 +13,7 @@ in the client.
 | Screen | Route | Who | Status |
 |---|---|---|---|
 | Login | `/login` | visitors | done |
-| Register | `/register` | visitors | planned |
+| Register | `/register` | visitors | done |
 | Events (server-side paging, filter, sort) | `/events` | logged in | planned |
 | Event details + seat map + purchase (409 handling) | `/events/:id` | logged in | planned |
 | My orders (+ cancel) | `/orders` | logged in | planned |
