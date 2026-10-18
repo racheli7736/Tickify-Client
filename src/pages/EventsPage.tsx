@@ -1,5 +1,5 @@
 import { useCallback, useMemo } from 'react';
-import { Box, Container, MenuItem, Pagination, Stack, TextField, Typography } from '@mui/material';
+import { Box, Container, MenuItem, Stack, TextField, Typography } from '@mui/material';
 import EventBusyRoundedIcon from '@mui/icons-material/EventBusyRounded';
 import { useSearchParams } from 'react-router-dom';
 import { categoriesApi } from '../api/categories.api';
@@ -7,6 +7,7 @@ import { eventsApi } from '../api/events.api';
 import { EmptyState } from '../components/common/EmptyState';
 import { ErrorState } from '../components/common/ErrorState';
 import { PageHero } from '../components/common/PageHero';
+import { Paginator } from '../components/common/Paginator';
 import { EventCard } from '../components/events/EventCard';
 import { EventCardSkeleton } from '../components/events/EventCardSkeleton';
 import { EventFilters } from '../components/events/EventFilters';
@@ -139,25 +140,15 @@ export function EventsPage() {
         )}
 
         {/* real server-side pagination: every page change is a new request */}
-        {!events.error && result && result.totalPages > 1 && (
-          <Stack sx={{ mt: 5, alignItems: 'center' }}>
-            <Pagination
-              count={result.totalPages}
-              page={Math.min(page, result.totalPages)}
-              onChange={(_, value) => {
-                update({ page: value === 1 ? undefined : String(value) }, false);
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-              }}
-              color="primary"
-              size="large"
-              shape="rounded"
-              showFirstButton
-              showLastButton
-            />
-            <Typography variant="caption" color="text.secondary" sx={{ mt: 1.5 }}>
-              עמוד {result.page} מתוך {result.totalPages}
-            </Typography>
-          </Stack>
+        {!events.error && result && (
+          <Paginator
+            page={page}
+            totalPages={result.totalPages}
+            onChange={(value) => {
+              update({ page: value === 1 ? undefined : String(value) }, false);
+              window.scrollTo({ top: 0, behavior: 'smooth' });
+            }}
+          />
         )}
       </Container>
     </>

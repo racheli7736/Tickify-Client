@@ -120,6 +120,10 @@ export interface Category {
   name: string;
 }
 
+export interface CategoryRequest {
+  name: string;
+}
+
 // ---------- errors (RFC 7807 problem details, extended with correlationId) ----------
 export interface ProblemDetails {
   status: number;

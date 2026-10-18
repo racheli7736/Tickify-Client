@@ -1,62 +1,8 @@
-import { useEffect, useState } from 'react';
-import { IconButton, InputAdornment, MenuItem, Paper, TextField } from '@mui/material';
-import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
-import ClearRoundedIcon from '@mui/icons-material/ClearRounded';
+import { MenuItem, Paper, TextField } from '@mui/material';
 import type { Category } from '../../types/api';
-import { useDebouncedValue } from '../../hooks/useDebouncedValue';
+import { SearchField } from '../common/SearchField';
 import { categoryLabel } from '../../utils/categories';
 import { sortOptions } from '../../utils/eventSort';
-
-interface SearchFieldProps {
-  value: string;
-  onSearch: (text: string) => void;
-}
-
-/** Search box that reports the text only after the user pauses typing (avoids a request per keystroke). */
-function SearchField({ value, onSearch }: SearchFieldProps) {
-  const [text, setText] = useState(value);
-  const [seenValue, setSeenValue] = useState(value);
-  const debounced = useDebouncedValue(text, 400);
-
-  // The URL changed from the outside (browser back button, "clear filters"): show it.
-  if (value !== seenValue) {
-    setSeenValue(value);
-    setText(value);
-  }
-
-  // The user paused typing: report the text once it differs from what the URL already has.
-  useEffect(() => {
-    if (debounced !== value) onSearch(debounced);
-    // Only a new debounced text may trigger a report; `value` is read at that moment.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [debounced]);
-
-  return (
-    <TextField
-      label="חיפוש אירוע"
-      placeholder="שם האירוע..."
-      value={text}
-      onChange={(event) => setText(event.target.value)}
-      slotProps={{
-        input: {
-          startAdornment: (
-            <InputAdornment position="start">
-              <SearchRoundedIcon color="action" />
-            </InputAdornment>
-          ),
-          endAdornment: text ? (
-            <InputAdornment position="end">
-              <IconButton edge="end" size="small" aria-label="ניקוי החיפוש" onClick={() => { setText(''); }}>
-                <ClearRoundedIcon fontSize="small" />
-              </IconButton>
-            </InputAdornment>
-          ) : undefined,
-        },
-        htmlInput: { 'aria-label': 'חיפוש אירוע לפי שם', maxLength: 100 },
-      }}
-    />
-  );
-}
 
 interface EventFiltersProps {
   search: string;

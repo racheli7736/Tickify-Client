@@ -10,16 +10,25 @@ in the client.
 
 ## Screens
 
-| Screen | Route | Who | Status |
+| Screen | Route | Who | What it does |
 |---|---|---|---|
-| Login | `/login` | visitors | done |
-| Register | `/register` | visitors | done |
-| Events (server-side paging, search, category filter, sort) | `/events` | logged in | done |
-| Event details + seat map + purchase (409 handling) | `/events/:id` | logged in | planned |
-| My orders (+ cancel) | `/orders` | logged in | planned |
-| Admin: events (list / create / edit / delete) | `/admin/events` | Admin | planned |
-| Admin: categories | `/admin/categories` | Admin | planned |
-| Admin: all orders | `/admin/orders` | Admin | planned |
+| Login | `/login` | visitors | E-mail + password, JWT saved, Hebrew errors; demo-account buttons in development |
+| Register | `/register` | visitors | Validation that mirrors the API, password strength hint, 409 (e-mail taken) handling, logs in automatically |
+| Events | `/events` | logged in | **Server-side paging** (3/6/9/12 per page), search, category filter, sorting; filters live in the URL |
+| Event details | `/events/:id` | logged in | Event info, **seat map**, selection (max 6), booking summary, confirm and success dialogs |
+| My orders | `/orders` | logged in | Paged list of the user's orders, **cancel** an active order of a future event |
+| Admin: events | `/admin/events` | Admin | Paged table with search/sort, create, edit, delete (409 when tickets were sold) |
+| Admin: create / edit event | `/admin/events/new`, `/admin/events/:id/edit` | Admin | Form with validation; the seat structure (rows x seats) is set only on creation |
+| Admin: categories | `/admin/categories` | Admin | Create, rename, delete (409 when the category is used by events) |
+| Admin: all orders | `/admin/orders` | Admin | Every order with the purchaser's name and id (never an e-mail) |
+
+### The limited resource: seats and HTTP 409
+
+The seat map shows `Available` / `Sold` seats from `GET /api/events/{id}/seats`. When the user confirms, the client sends **one**
+`POST /api/orders`. If another user bought one of the seats in the meantime the server answers **409 Conflict** and rejects the whole order
+(all or nothing). The client then: shows the server's Hebrew message in a prominent alert, names the seats that were taken, highlights them
+on the map, **reloads the map**, removes the taken seats from the selection and keeps the still-free ones selected, so the user can
+confirm again immediately. Nothing about availability is decided in the client - the server is the only authority.
 
 ## Requirements
 
@@ -53,6 +62,13 @@ Demo accounts created by the API seed (also available as buttons on the login pa
 
 It is read from `.env.development` (committed, contains no secret). To override it locally create `.env.local` (git-ignored; see `.env.example`).
 **Never put secrets in a `VITE_*` variable:** everything with that prefix is visible in the browser.
+
+## Verification
+
+Every screen was checked in a real browser (headless Chrome) against the running API: login/registration, events paging/search/filter/sort,
+seat selection, purchase, **HTTP 409 conflict** (a second user buys the seat first), order cancellation, the admin screens (events, categories,
+orders), role-based access (`/forbidden`), error and loading states, and mobile/tablet/desktop layouts. Type check, lint and production build
+are clean (`npx tsc -b`, `npm run lint`, `npm run build`), and `npm audit` reports no vulnerabilities.
 
 ## Scripts
 

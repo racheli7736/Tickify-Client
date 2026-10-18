@@ -17,3 +17,14 @@ export const formatDay = (iso: string) => dayFormat.format(new Date(iso));
 export const formatPrice = (amount: number) => priceFormat.format(amount);
 
 export const hasStarted = (iso: string) => new Date(iso).getTime() <= Date.now();
+
+const pad = (value: number) => String(value).padStart(2, '0');
+
+/** UTC timestamp from the API -> the value of an <input type="datetime-local"> (the visitor's local time). */
+export function toLocalInputValue(iso: string): string {
+  const date = new Date(iso);
+  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(date.getHours())}:${pad(date.getMinutes())}`;
+}
+
+/** Value of an <input type="datetime-local"> (local time) -> UTC ISO string for the API. */
+export const fromLocalInputValue = (local: string): string => new Date(local).toISOString();
