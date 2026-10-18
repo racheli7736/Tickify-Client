@@ -6,8 +6,8 @@ services:
     buildCommand: npm ci && npm run build
     staticPublishPath: dist
     envVars:
-      - key: VITE_API_URL            # baked in at build time; must be the public API address + /api
-        value: https://tickify-api.onrender.com/api
+      - key: VITE_API_URL            # baked in at build time; must be the public API address (no /api suffix)
+        value: https://tickify-api.onrender.com
     routes:
       - type: rewrite                # single-page app: every path is served by index.html
         source: /*
