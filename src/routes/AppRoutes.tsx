@@ -2,6 +2,7 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 import { RedirectIfAuthenticated, RequireAdmin, RequireAuth } from '../auth/RouteGuards';
 import { AuthLayout } from '../layouts/AuthLayout';
 import { MainLayout } from '../layouts/MainLayout';
+import { EventDetailsPage } from '../pages/EventDetailsPage';
 import { EventsPage } from '../pages/EventsPage';
 import { LoginPage } from '../pages/LoginPage';
 import { RegisterPage } from '../pages/RegisterPage';
@@ -25,7 +26,7 @@ export function AppRoutes() {
         {/* any logged-in user */}
         <Route element={<RequireAuth />}>
           <Route path="/events" element={<EventsPage />} />
-          <Route path="/events/:id" element={<PlaceholderPage title="פרטי אירוע והזמנת מושבים" />} />
+          <Route path="/events/:id" element={<EventDetailsPage />} />
           <Route path="/orders" element={<PlaceholderPage title="ההזמנות שלי" />} />
         </Route>
 
