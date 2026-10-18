@@ -30,10 +30,10 @@ interface NavItem {
   to: string;
 }
 
-const userLinks: NavItem[] = [
-  { label: 'אירועים', to: '/events' },
-  { label: 'ההזמנות שלי', to: '/orders' },
-];
+const eventsLink: NavItem = { label: 'אירועים', to: '/events' };
+
+// Admins cannot buy tickets, so "My orders" is for regular users only (admins have "All orders" under "Management").
+const myOrdersLink: NavItem = { label: 'ההזמנות שלי', to: '/orders' };
 
 const adminLinks: NavItem[] = [
   { label: 'ניהול אירועים', to: '/admin/events' },
@@ -81,7 +81,8 @@ export function MainLayout() {
     navigate('/login');
   };
 
-  const mobileLinks = isAuthenticated ? [...userLinks, ...(isAdmin ? adminLinks : [])] : [];
+  const mainLinks = isAdmin ? [eventsLink] : [eventsLink, myOrdersLink];
+  const mobileLinks = isAuthenticated ? [...mainLinks, ...(isAdmin ? adminLinks : [])] : [];
 
   return (
     <Box sx={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', bgcolor: 'background.default' }}>
@@ -101,7 +102,7 @@ export function MainLayout() {
 
             {isAuthenticated && (
               <Stack direction="row" spacing={0.5} sx={{ display: { xs: 'none', md: 'flex' }, ms: 2, marginInlineStart: 3 }}>
-                {userLinks.map((link) => (
+                {mainLinks.map((link) => (
                   <Button key={link.to} component={NavLink} to={link.to} sx={navLinkSx}>
                     {link.label}
                   </Button>

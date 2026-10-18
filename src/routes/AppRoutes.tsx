@@ -1,5 +1,5 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
-import { RedirectIfAuthenticated, RequireAdmin, RequireAuth } from '../auth/RouteGuards';
+import { RedirectIfAuthenticated, RequireAdmin, RequireAuth, RequireUser } from '../auth/RouteGuards';
 import { AuthLayout } from '../layouts/AuthLayout';
 import { MainLayout } from '../layouts/MainLayout';
 import { AdminCategoriesPage } from '../pages/admin/AdminCategoriesPage';
@@ -31,6 +31,10 @@ export function AppRoutes() {
         <Route element={<RequireAuth />}>
           <Route path="/events" element={<EventsPage />} />
           <Route path="/events/:id" element={<EventDetailsPage />} />
+        </Route>
+
+        {/* regular users only: admins are redirected to /admin/orders */}
+        <Route element={<RequireUser />}>
           <Route path="/orders" element={<OrdersPage />} />
         </Route>
 
